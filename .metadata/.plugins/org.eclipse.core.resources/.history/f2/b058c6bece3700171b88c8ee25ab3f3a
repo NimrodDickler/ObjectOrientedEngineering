@@ -1,0 +1,169 @@
+package test;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.Stack;
+
+public class Q3 {
+    public static double calc(String expression) {
+        return getString(expression);
+
+    }
+    
+    // Shunting-Yard 
+    private static double convertInfixToPostfix(String expression){
+    	ArrayList<String> tokens = new ArrayList<String>();
+        Stack<String> operators = new Stack<String>();
+        Queue output = new ArrayDeque<String>();
+        
+		return 0;
+    	
+    }
+    
+    // Validation Functions
+    public static boolean compareOperators(){
+		return false;
+	}
+    public static String[] getTokenArray(String exp){
+    	
+    	String[] tokens = exp.split(" ");
+    	return tokens;
+    }
+    public static boolean isNumeric(String s){
+    	 return !(s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/") || s.equals("(") || s.equals(")") || s.equals(""));
+	}
+    public static boolean isOperator(){
+ 		return false;
+ 	}
+    public static boolean isParenthesis(){
+ 		return false;
+ 	}
+    public static boolean isLeftParenthesis(){
+ 		return false;
+ 	}
+    
+    /////////////////////// Shunting Yard Algorithm /////////////////////
+    public static double getString(String ex) {
+        ArrayList<String> token = new ArrayList<String>();// for tokens
+        Stack<String> symbols = new Stack<String>();// for operators
+        Queue output = new ArrayDeque<String>();// for the output
+        String temp1 = tempFu(ex);
+        String[] temp = temp1.split(" ");
+        //push all the string to the arraylist
+
+        for (int i = 0; i < temp.length; i++)
+
+            if (!temp[i].equals(""))
+                token.add(temp[i]);
+        
+        //can do with while
+        for (int i = 0; i < token.size(); i++) {
+            // if the token is number
+            if (isNumeric1(token.get(i)))
+            {
+                output.add((token.get(i)));
+            }
+            else if(token.get(i).equals("("))
+                symbols.push(token.get(i));
+            else
+
+            if(token.get(i).equals(")"))
+            {
+                while (!symbols.isEmpty() && !symbols.peek().equals("(")) {
+                    output.add(symbols.pop());
+                }
+                if(!symbols.isEmpty())
+                    symbols.pop();
+            }
+
+            else
+            {
+                while (!symbols.isEmpty()&&stronger(token.get(i),symbols.peek())) {
+                    output.add(symbols.pop());
+                }
+                symbols.add(token.get(i));
+                }
+        }
+        while (!symbols.isEmpty())
+        {
+            output.add(symbols.pop());
+        }
+        Queue<String> tempq = reverseQeue(output);
+        Expression x = getQueueCalculate(tempq);
+        return x.calculate();
+    }
+    /////////////////////// Shunting Yard Algorithm /////////////////////
+
+
+//Check how is strogner
+    public static boolean stronger(String s,String s2)
+    {
+        return ((s.equals("-") || s.equals("+"))&& (s2.equals("/")||s2.equals("*")));
+    }
+
+    //Recursive function to calculate;
+    public static Expression getQueueCalculate(Queue<String> q) {
+
+        if (q.isEmpty())
+            return new Number(0);
+        else {
+            if (q.peek().equals("+")) {
+                q.poll();
+                return new Plus(getQueueCalculate(q), getQueueCalculate(q));
+
+            } else if (q.peek().equals("-")) {
+                q.poll();
+                Expression num1 = getQueueCalculate(q);
+                Expression num2 = getQueueCalculate(q);
+                return new Minus(num2, num1);
+            } else if (q.peek().equals("*")) {
+                q.poll();
+                return new Mul(getQueueCalculate(q), getQueueCalculate(q));
+
+            } else if (q.peek().equals("/")) {
+                q.poll();
+                Expression num1 = getQueueCalculate(q);
+                Expression num2 = getQueueCalculate(q);
+                return new Div(num2, num1);
+            } else
+                return new Number(Double.parseDouble(q.poll()));
+
+        }
+    }
+
+    public static Queue<String> reverseQeue(Queue<String> q) {
+        Queue<String> reverse = new ArrayDeque<>();
+        Stack<String> temp = new Stack<String>();
+
+        for (String s : q) {
+            temp.add(s);
+        }
+        while (!temp.isEmpty()) {
+            reverse.add(temp.pop());
+        }
+        return reverse;
+    }
+
+    public static String tempFu(String s) {
+        boolean gotSy = false;
+        String shir = "";
+        String[] temp = s.split("");
+        for (int i = 0; i < temp.length; i++) {
+            if (isNumeric1(temp[i]) || temp[i].equals(".")) {
+                shir += temp[i];
+                gotSy = false;
+            } else if (temp[i].equals("+") || temp[i].equals("-") || temp[i].equals("*") || temp[i].equals("/") || temp[i].equals("(") || temp[i].equals(")")) {
+                if (!gotSy) {
+                    shir += " " + temp[i] + " ";
+                    gotSy = true;
+                } else {
+                    shir += temp[i] + " ";
+                }
+            }
+        }
+        return shir;
+    }
+}
+
+

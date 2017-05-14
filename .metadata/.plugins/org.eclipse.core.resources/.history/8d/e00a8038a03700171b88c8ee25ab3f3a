@@ -1,0 +1,20 @@
+/**
+ * 
+ */
+package test;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Div extends BinaryExpression {
+
+	/**
+	 * @return 
+	 * 
+	 */
+	public double Div() {
+		
+	}
+
+}

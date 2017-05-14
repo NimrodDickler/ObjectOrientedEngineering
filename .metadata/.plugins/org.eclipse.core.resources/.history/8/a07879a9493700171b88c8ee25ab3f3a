@@ -1,0 +1,13 @@
+/**
+ * 
+ */
+package test;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Number {
+	
+	private double value;
+}

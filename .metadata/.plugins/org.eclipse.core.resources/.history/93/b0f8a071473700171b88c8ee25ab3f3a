@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package test.operators;
+
+import test.BinaryExpression;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Plus extends BinaryExpression {
+
+}

@@ -1,0 +1,123 @@
+package test;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.Stack;
+
+public class Q3 {
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public static double calc(String expression) {
+    	
+    	ArrayList<String> tokens = getTokenArray(expression);
+    	Stack<String> operators = new Stack<String>();
+    	Queue output = new ArrayDeque<String>();
+        
+    	for(String token : tokens) {
+    		System.out.print(token);
+    		if (isNumeric(token))
+                output.add(token);
+    		else if(token.equals("("))
+    			operators.push(token);
+    		else if(token.equals(")")){
+    			while(!operators.isEmpty() && !operators.peek().equals("("))
+    				output.add(operators.pop());
+    			if(!operators.isEmpty())
+    				operators.pop();
+    		}
+	        else{
+	        	while (!operators.isEmpty() && isPrecedence(token,operators.peek()))
+	        		output.add(operators.pop());
+	        	operators.add(token);
+	        }
+		}
+
+		while (!operators.isEmpty())
+        {
+            output.add(operators.pop());
+        }
+		
+		System.out.print("\n New pos calc:");
+    	System.out.print(output.toString());
+        Queue<String> tempq = reverseQeue(output);
+        Expression x = getQueueCalculate(tempq);
+        return x.calculate();
+    }
+    
+    // Creates a token array from a string
+	private static ArrayList<String> getTokenArray(String exp){
+		String[] characters = exp.split("");
+    	String tokenString = "";
+    	ArrayList<String> tokens = new ArrayList<String>();
+    	
+    	// check every character to see if it's a symbol, set space between numbers, ebale 2 digit numbers
+    	for (String character : characters) {
+    		
+    		//found a number or part of a number
+    		if(isNumeric(character) || character.equals("."))
+    			tokenString += character;
+    		else
+    			tokenString += " " + character + " ";
+    	}
+    	characters = tokenString.split(" ");
+    	
+    	for (String character: characters) {
+    		//added the if just in case
+    		if(!character.equals(" ") && !character.equals(""))
+    			tokens.add(character);
+		}
+    	
+    	return tokens;
+    }
+	// returns true when the string is not one of the operators we support
+    public static boolean isNumeric(String s){
+   	 return !(s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/") || s.equals("(") || s.equals(")") || s.equals(""));
+	}
+	//returns true when the weak operator only when the first operator is weaker then the second operator  
+    public static boolean isPrecedence(String operator1 ,String operator2){
+        return ((operator1.equals("-") || operator1.equals("+")) && (operator2.equals("/") || operator2.equals("*")));
+    }
+   
+    //Recursive function to calculate;
+    public static Expression getQueueCalculate(Queue<String> q) {
+
+        if (q.isEmpty())
+            return new Number(0);
+        else {
+            if (q.peek().equals("+")) {
+                q.poll();
+                return new Plus(getQueueCalculate(q), getQueueCalculate(q));
+
+            } else if (q.peek().equals("-")) {
+                q.poll();
+                Expression num1 = getQueueCalculate(q);
+                Expression num2 = getQueueCalculate(q);
+                return new Minus(num2, num1);
+            } else if (q.peek().equals("*")) {
+                q.poll();
+                return new Mul(getQueueCalculate(q), getQueueCalculate(q));
+
+            } else if (q.peek().equals("/")) {
+                q.poll();
+                Expression num1 = getQueueCalculate(q);
+                Expression num2 = getQueueCalculate(q);
+                return new Div(num2, num1);
+            } else
+                return new Number(Double.parseDouble(q.poll()));
+
+        }
+    }
+
+    public static Queue<String> reverseQeue(Queue<String> q) {
+        Queue<String> reverse = new ArrayDeque<>();
+        Stack<String> temp = new Stack<String>();
+
+        for (String s : q) {
+            temp.add(s);
+        }
+        while (!temp.isEmpty()) {
+            reverse.add(temp.pop());
+        }
+        return reverse;
+    }
+}

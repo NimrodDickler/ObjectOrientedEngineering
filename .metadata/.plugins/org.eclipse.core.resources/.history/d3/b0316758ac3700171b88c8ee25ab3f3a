@@ -1,0 +1,42 @@
+/**
+ * 
+ */
+package test;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Main {
+	public static void main(String[] args) {
+		
+		Expression expPlus = new Plus(new Number(4),new Number(3));
+		int exprectedPlus = 7;
+		if(expPlus.calculate() == exprectedPlus)
+			System.out.print("Plus is OK\n");
+		
+		Expression expMinus = new Minus(new Number(4),new Number(3));
+		int exprectedMinus = 1;
+		if(expMinus.calculate() == exprectedMinus)
+			System.out.print("Minus is OK\n");
+		
+		Expression expMul = new Mul(new Number(4),new Number(3));
+		int exprectedMul = 12;
+		if(expMul.calculate() == exprectedMul)
+			System.out.print("Mul is OK\n");
+		
+		
+		Expression expDiv = new Div(new Number(4),new Number(1));
+		int exprectedDiv = 1;
+		if(expDiv.calculate() == exprectedDiv)
+			System.out.print("Div is OK\n");
+		
+		
+		Expression exp = new Plus(new Number(4),new Number(4));
+		Expression e2=new Plus(new Div(new Number(10),new Number(2)), new Mul(new Number(1), new Minus(new Number(3),new Number(4))));
+	
+        System.out.print("1.Calculate expression: "+ exp.calculate());
+        System.out.print("2.Calculate expression: "+ e2.calculate());
+	}
+
+}

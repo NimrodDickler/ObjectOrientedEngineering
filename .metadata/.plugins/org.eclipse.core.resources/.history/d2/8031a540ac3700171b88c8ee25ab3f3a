@@ -1,0 +1,20 @@
+/**
+ * 
+ */
+package test;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Main {
+	public static void main(String[] args) {
+		
+		Expression exp = new Plus(new Number(4),new Number(4));
+		Expression e2=new Plus(new Div(new Number(10),new Number(2)), new Mul(new Number(1), new Minus(new Number(3),new Number(4))));
+        
+        System.out.print("1.Calculate expression: "+ exp.calculate());
+        System.out.print("2.Calculate expression: "+ e2.calculate());
+	}
+
+}

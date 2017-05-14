@@ -1,0 +1,50 @@
+/**
+ * 
+ */
+package test;
+
+import java.util.ArrayList;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Q3 {
+
+    public static double calc(String expression) {
+    	ArrayList<String> token = getTokenArray(expression);
+        
+    	return 0;
+    }
+    
+    //Helping Methods
+	private static ArrayList<String> getTokenArray(String exp){
+		String[] characters = exp.split("");
+    	String tokenString = "";
+    	ArrayList<String> tokens = new ArrayList<String>();
+    	
+    	// check every character to see if it's a symbol, set space between numbers, ebale 2 digit numbers
+    	for (String character : characters) {
+    		
+    		//found a number or part of a number
+    		if(isNumeric(character) || character.equals("."))
+    			tokenString += character;
+    		else
+    			tokenString += " " + character + " ";
+    	}
+    	characters = tokenString.split(" ");
+    	
+    	for (String character: characters) {
+    		//added the if just in case
+    		if(!character.equals(" "))
+    			tokens.add(character);
+		}
+    	
+    	return tokens;
+    }
+
+    public static boolean isNumeric(String s){
+   	 return !(s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/") || s.equals("(") || s.equals(")") || s.equals(""));
+	}
+
+}

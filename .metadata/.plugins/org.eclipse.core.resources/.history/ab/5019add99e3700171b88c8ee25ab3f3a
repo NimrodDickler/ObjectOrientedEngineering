@@ -1,0 +1,24 @@
+/**
+ * 
+ */
+package test;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Div extends BinaryExpression {
+
+	/**
+	 * 
+	 */
+	public Div() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public double calculate() {
+		return getRight().calculate()*getRight().calculate();
+	}
+
+}

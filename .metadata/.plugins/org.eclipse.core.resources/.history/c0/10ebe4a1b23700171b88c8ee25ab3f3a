@@ -1,0 +1,45 @@
+/**
+ * 
+ */
+package test;
+
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Main {
+	public static void main(String[] args) {
+		
+		Expression expPlus = new Plus(new Number(4),new Number(3));
+		int exprectedPlus = 7;
+		if(expPlus.calculate() == exprectedPlus)
+			System.out.print("Plus is OK\n");
+		
+		Expression expMinus = new Minus(new Number(4),new Number(3));
+		int exprectedMinus = 1;
+		if(expMinus.calculate() == exprectedMinus)
+			System.out.print("Minus is OK\n");
+		
+		Expression expMul = new Mul(new Number(4),new Number(3));
+		int exprectedMul = 12;
+		if(expMul.calculate() == exprectedMul)
+			System.out.print("Mul is OK\n");
+		
+		
+		Expression expDiv = new Div(new Number(4),new Number(4));
+		int exprectedDiv = 1;
+		if(expDiv.calculate() == exprectedDiv)
+			System.out.print("Div is OK\n");
+		
+		
+		Expression exp = new Plus(new Number(4),new Number(4));
+		System.out.print("\n1.Calculate expression: "+ exp.calculate());
+		Expression exp2=new Plus(new Div(new Number(10),new Number(2)), new Mul(new Number(1), new Minus(new Number(3),new Number(4))));
+		System.out.print("\n2.Calculate expression: "+ exp2.calculate());
+		Expression exp3 = new Div(new Number(4),new Number(3));
+        System.out.print("\n3.Calculate expression: "+ exp3.calculate());
+	}
+}

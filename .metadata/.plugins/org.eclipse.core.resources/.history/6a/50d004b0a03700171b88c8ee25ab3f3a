@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package test;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Plus extends BinaryExpression {
+
+	/**
+	 * 
+	 */
+	public Plus() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

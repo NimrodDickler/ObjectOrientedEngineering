@@ -1,0 +1,17 @@
+/**
+ * 
+ */
+package test;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Main {
+	public static void main(String[] args) {
+		
+		Expression e2=new Plus(new Div(new Number(10),new Number(2)), new Mul(new Number(1), new Min(new Number(3),new Number(4))));
+        System.out.print("This is my test----> "+e2.calculate());
+	}
+
+}

@@ -1,0 +1,20 @@
+/**
+ * 
+ */
+package test;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Mul extends BinaryExpression {
+
+	/**
+	 * 
+	 */
+	@Override
+	public double calculate() {
+		return getLeft().calculate()*getRight().calculate();
+	}
+
+}

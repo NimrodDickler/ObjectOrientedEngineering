@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+package test;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Number implements Expression {
+
+	/* (non-Javadoc)
+	 * @see test.Expression#calculate()
+	 */
+	@Override
+	public double calculate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

@@ -1,0 +1,15 @@
+package test;
+
+public class BinaryExpression implements Expression {
+
+	public BinaryExpression() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public double calculate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

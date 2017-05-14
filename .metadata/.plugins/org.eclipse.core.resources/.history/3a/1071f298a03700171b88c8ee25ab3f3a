@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package test;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Mul extends BinaryExpression {
+
+	/**
+	 * 
+	 */
+	public Mul() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

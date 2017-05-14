@@ -1,0 +1,14 @@
+/**
+ * 
+ */
+package test;
+
+import Binary;
+
+/**
+ * @author nimrodd
+ *
+ */
+public class Div extends Binary {
+
+}
