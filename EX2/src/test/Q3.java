@@ -1,6 +1,8 @@
 package test;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -51,30 +53,32 @@ public class Q3 {
     	return Double.parseDouble(calcStack.pop());
     }
     
-    private static Queue shuntingYard (ArrayList<String> tokens){
+    private static Queue<String> shuntingYard (ArrayList<String> tokens){
     	Stack<String> operators = new Stack<String>();
     	Queue<String> output = new ArrayDeque<String>();
         
     	for(String token : tokens) {
+    		// Number - Add it to the queue
     		if (isNumeric(token))
                 output.add(token);
+    		// Left Bracket 
     		else if(token.equals("("))
     			operators.push(token);
+    		// Right Bracket 
     		else if(token.equals(")")){
-    			while(!operators.isEmpty() && !operators.peek().equals("("))
-    				output.add(operators.pop());
-    			if(!operators.isEmpty())
-    				operators.pop();
+				while(!operators.isEmpty() && !operators.peek().equals("("))
+					output.add(operators.pop());
+				if(!operators.isEmpty() && operators.peek().equals("("))
+					operators.pop();
     		}
+    		// Operator
 	        else{
 	        	while (!operators.isEmpty() && isPrecedence(token,operators.peek()))
 	        		output.add(operators.pop());
 	        	operators.add(token);
 	        }
 		}
-
-		while (!operators.isEmpty())
-        {
+		while (!operators.isEmpty()){
             output.add(operators.pop());
         }
 		
@@ -89,7 +93,7 @@ public class Q3 {
     	// check every character to see if it's a symbol, set space between numbers, ebale 2 digit numbers
     	for (String character : characters) {
     		
-    		//found a number or part of a number
+    		// found a number or part of a number
     		if(isNumeric(character) || character.equals("."))
     			tokenString += character;
     		else
@@ -108,9 +112,20 @@ public class Q3 {
     private static boolean isNumeric(String s){
    	 return !(s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/") || s.equals("(") || s.equals(")") || s.equals(""));
 	}
-	//returns true when the weak operator only when the first operator is weaker then the second operator  
-    private static boolean isPrecedence(String operator1 ,String operator2){
-        return ((operator1.equals("-") || operator1.equals("+")) && (operator2.equals("/") || operator2.equals("*")));
+	
+
+    // Operator Map
+    private static Map<String, Integer> operators = new HashMap<String, Integer>() {{
+        put("+", 1);
+        put("-", 2);
+        put("*", 3);
+        put("/", 4);
+    }};
+    
+    //returns true when the weak operator only when the first operator is weaker then the second operator  
+    private static boolean isPrecedence(String op1, String op2)
+    {
+        return (operators.containsKey(op2) && operators.get(op2) >= operators.get(op1));
     }
    
 }
