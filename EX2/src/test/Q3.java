@@ -10,73 +10,76 @@ public class Q3 {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public static double calc(String expression) {
-    	ArrayList<String> tokens = getTokenArray(expression);
-    	Queue output = shuntingYard(tokens);
+    	ArrayList<String> tokens = splitStringToTokens(expression);
+    	Queue output = inFixToPostFix(tokens);
     	Stack<String> calcStack = new Stack<String>();
     	while(!output.isEmpty())
     	{
-    		String cur = output.poll().toString();
-    		if(isNumeric(cur))
-    		{
-    			calcStack.push(cur);
-    		}
-    		else if(cur.equals("+"))
-    		{
-    			String operand2 = calcStack.pop();
-    			String operand1 = calcStack.pop();
-    			Expression exp = new Plus(new Number(Double.parseDouble(operand1)), new Number(Double.parseDouble(operand2)));
+    		String  op2, op1, cur = output.poll().toString();
+    		Expression exp;
+    		switch (cur) {
+			case "+":
+				op2 = calcStack.pop();
+    			op1 = calcStack.pop();
+    			exp = new Plus(new Number(Double.parseDouble(op1)), new Number(Double.parseDouble(op2)));
     			calcStack.push(String.valueOf(exp.calculate()));
-    		}
-    		else if(cur.equals("-"))
-    		{
-    			String operand2 = calcStack.pop();
-    			String operand1 = calcStack.pop();
-    			Expression exp = new Minus(new Number(Double.parseDouble(operand1)), new Number(Double.parseDouble(operand2)));
+				break;
+			case "-":
+				op2 = calcStack.pop();
+    			op1 = calcStack.pop();
+    			exp = new Minus(new Number(Double.parseDouble(op1)), new Number(Double.parseDouble(op2)));
     			calcStack.push(String.valueOf(exp.calculate()));
-    		}
-    		else if(cur.equals("*"))
-    		{
-    			String operand2 = calcStack.pop();
-    			String operand1 = calcStack.pop();
-    			Expression exp = new Mul(new Number(Double.parseDouble(operand1)), new Number(Double.parseDouble(operand2)));
+				break;
+			case "*":
+				op2 = calcStack.pop();
+    			op1 = calcStack.pop();
+    			exp = new Mul(new Number(Double.parseDouble(op1)), new Number(Double.parseDouble(op2)));
     			calcStack.push(String.valueOf(exp.calculate()));
-    		}
-    		else if(cur.equals("/"))
-    		{
-    			String operand2 = calcStack.pop();
-    			String operand1 = calcStack.pop();
-    			Expression exp = new Div(new Number(Double.parseDouble(operand1)), new Number(Double.parseDouble(operand2)));
+				break;
+			case "/":
+				op2 = calcStack.pop();
+    			op1 = calcStack.pop();
+    			exp = new Div(new Number(Double.parseDouble(op1)), new Number(Double.parseDouble(op2)));
     			calcStack.push(String.valueOf(exp.calculate()));
-    		}
+				break;
+			default:
+				if(checkIsNumeric(cur))
+	    		{
+					calcStack.push(cur);
+	    		}
+				break;
+			}
     	}
     	
     	return Double.parseDouble(calcStack.pop());
     }
     
-    private static Queue<String> shuntingYard (ArrayList<String> tokens){
+    private static Queue<String> inFixToPostFix (ArrayList<String> tokens){
     	Stack<String> operators = new Stack<String>();
     	Queue<String> output = new ArrayDeque<String>();
         
     	for(String token : tokens) {
-    		// Number - Add it to the queue
-    		if (isNumeric(token))
-                output.add(token);
-    		// Left Bracket 
-    		else if(token.equals("("))
+    		switch (token) {
+			case "(":
     			operators.push(token);
-    		// Right Bracket 
-    		else if(token.equals(")")){
+				break;
+			case ")":
 				while(!operators.isEmpty() && !operators.peek().equals("("))
 					output.add(operators.pop());
 				if(!operators.isEmpty() && operators.peek().equals("("))
 					operators.pop();
-    		}
-    		// Operator
-	        else{
-	        	while (!operators.isEmpty() && isPrecedence(token,operators.peek()))
-	        		output.add(operators.pop());
-	        	operators.add(token);
-	        }
+				break;
+			default:
+				if (checkIsNumeric(token))
+	                output.add(token);
+		        else{
+		        	while (!operators.isEmpty() && checkPriority(token,operators.peek()))
+		        		output.add(operators.pop());
+		        	operators.add(token);
+		        }
+				break;
+			}
+    		
 		}
 		while (!operators.isEmpty()){
             output.add(operators.pop());
@@ -84,24 +87,19 @@ public class Q3 {
 		
 		return output;
     }
-    // Creates a token array from a string
- 	private static ArrayList<String> getTokenArray(String exp){
-		String[] characters = exp.split("");
+ 	private static ArrayList<String> splitStringToTokens(String exp){
     	String tokenString = "";
     	ArrayList<String> tokens = new ArrayList<String>();
     	
-    	// check every character to see if it's a symbol, set space between numbers, ebale 2 digit numbers
-    	for (String character : characters) {
+    	for (String character : exp.split("")) {
     		
-    		// found a number or part of a number
-    		if(isNumeric(character) || character.equals("."))
+    		if(checkIsNumeric(character) || character.equals("."))
     			tokenString += character;
     		else
     			tokenString += " " + character + " ";
     	}
-    	characters = tokenString.split(" ");
     	
-    	for (String character: characters) {
+    	for (String character: tokenString.split(" ")) {
     		if(!character.equals(" ") && !character.equals(""))
     			tokens.add(character);
 		}
@@ -109,8 +107,15 @@ public class Q3 {
     	return tokens;
     }
 	// returns true when the string is not one of the operators we support
-    private static boolean isNumeric(String s){
-   	 return !(s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/") || s.equals("(") || s.equals(")") || s.equals(""));
+    private static boolean checkIsNumeric(String token){
+   	 return !(token.equals("+") 
+   			 || token.equals("-") 
+   			 || token.equals("*") 
+   			 || token.equals("/") 
+   			 || token.equals("(") 
+   			 || token.equals(")") 
+   			 || token.equals("")
+   			 );
 	}
 	
 
@@ -123,7 +128,7 @@ public class Q3 {
     }};
     
     //returns true when the weak operator only when the first operator is weaker then the second operator  
-    private static boolean isPrecedence(String op1, String op2)
+    private static boolean checkPriority(String op1, String op2)
     {
         return (operators.containsKey(op2) && operators.get(op2) >= operators.get(op1));
     }

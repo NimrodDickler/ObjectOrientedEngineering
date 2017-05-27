@@ -1,0 +1,9 @@
+package GenericFactory;
+
+public class GenericFactory {
+
+	public GenericFactory() {
+		// TODO Auto-generated constructor stub
+	}
+
+}
