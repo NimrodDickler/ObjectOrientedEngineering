@@ -1,0 +1,9 @@
+package Goblin;
+
+public class Goblin {
+
+	public Goblin() {
+		// TODO Auto-generated constructor stub
+	}
+
+}
