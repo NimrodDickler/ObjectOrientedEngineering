@@ -21,4 +21,7 @@
 <fullyQualifiedTypeName name="test.Minus"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="test.Goblin"/>
+<fullyQualifiedTypeName name="test.Goblin.GoblinBuilder"/>
+<fullyQualifiedTypeName name="test.Q3.AbstractFactory"/>
 </qualifiedTypeNameHistroy>

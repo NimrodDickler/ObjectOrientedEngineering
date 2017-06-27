@@ -1,0 +1,33 @@
+package test;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class D implements I {
+
+	protected I i;
+	BlockingQueue<Runnable> dispatchQueue = new LinkedBlockingQueue<Runnable>();
+
+	public D(I i) {
+		this.i = i;
+		new Thread(new Runnable() {
+			public void run() {
+				while (true) {
+					try {
+						// take() blocks, so no busy waiting
+						dispatchQueue.take().run();
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+		}).start();
+
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+
+	}
+
+}
